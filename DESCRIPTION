@@ -1,0 +1,11 @@
+Package: kwb.mia.iw
+Maintainer: Hauke Sonnenberg <hauke.sonnenberg@kompetenz-wasser.de>
+Depends: kwb.base
+Imports: kwb.db, kwb.event, kwb.utils, kwb.datetime, kwb.plot
+Author: Hauke Sonnenberg
+Version: 0.2.99
+License: GPL
+Title: InfoWorks related functions in KWB project MIA-CSO
+Description: Calculation of file sizes of InfoWorks result csv-files
+        exported from InfoWorks.
+
