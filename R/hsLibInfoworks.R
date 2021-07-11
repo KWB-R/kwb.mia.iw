@@ -1,96 +1,88 @@
-# The following lines starting with '#!!' will be recognised as description.
-# From this special header a DESCRIPTION file is created when recreating
-# pdf documentation.
+# hsRep ------------------------------------------------------------------------
 
-#!! Package: kwb.mia.iw
-#!! Maintainer: Hauke Sonnenberg <hauke.sonnenberg@kompetenz-wasser.de>
-#!! Author: Hauke Sonnenberg
-#!! Version: Current
-#!! License: GPL
-#!! Title: InfoWorks related functions in KWB project MIA-CSO
-#!! Description: Calculation of file sizes of InfoWorks result csv-files exported 
-#!!   from InfoWorks.
-
-# Created: 2011-11-??
-# Updated: 2012-04-24
-# Version: ?
-
-# hsRep(): repeat elements n-times ---------------------------------------------
-hsRep <- function
-### repeat elements n-times
-(
-  elements, 
-  ### vector of which each element is to be repeated n-times
-  n
-  ### number by which each element of \emph{elements} is repeated
-  ) 
+#' Repeat \code{elements} n-times
+#' 
+#' @param elements vector of which each element is to be repeated n-times
+#' @param n number by which each element of \emph{elements} is repeated
+#' 
+#' @return vector in which each element of \emph{elements} is repeated \emph{n}-times
+#' @export
+hsRep <- function(elements, n) 
 {
   res <- NULL
   for (ele in elements) {
     res <- c(res, rep(ele, n))
   }
   res
-  ### vector in which each element of \emph{elements} is repeated \emph{n}-times
 }
 
-# hsGerrisConstParsMia(): constant Gerris/QSim boundary conditions ----------------------
+# hsGerrisConstParsMia ---------------------------------------------------------
+
+#' Gerris Constant Parameters
+#' 
+#' Gerris/QSim boundary conditions that are treated as constant within MIA-CSO
+#'   project. Parameter names according to definition in Gerris configuration
+#'   file "GerrisParam.xml"
+#' 
+#' @param VO2 "Sauerstoffgehalt" in mg/l
+#' @param SI "Silizium" in mg/l
+#' @param VPH "pH-Wert"
+#' @param VX0 "Nitrosomonas" in mg/l
+#' @param VX02 "Nitrobacter" in mg/l
+#' @param ZOOIND "Rotatorien/Zooplanktondichte" in Ind/l
+#' @param VKIGR "Kieselalgen/Anteil der Kieselalgen am Gesamt-Chlorophyll-a", 0..1
+#' @param LF Leitfaehigkeit" in mikro-S/cm
+#' @param MW "m-Wert" in mmol/l
+#' @param VNO2 "Nitrit-N" in mg/l
+#' @param VNO3 "Nitrat-N" in mg/l
+#' @param CA "Calcium" in mg/l
+#' @param CHLA "Chlorophyll-a" in mikro-g/l
+#' @param ANTBL "Blaualgen/Anteil der Blaualgen am Gesamt-Chlorophyll-a", 0..1
+#' @return Data frame with columns \emph{VO2}, \emph{SI}, \emph{VPH}, \emph{VX0},
+#'   \emph{VX02}, \emph{ZOOIND}, \emph{VKIGR}, \emph{LF}, \emph{MW},
+#'   \emph{VNO2}, \emph{VNO3}, \emph{CA}, \emph{CHLA}, \emph{ANTBL} containing
+#'   the default values for non-simulated parameters in the first and only row
+#' @export
 hsGerrisConstParsMia <- function
-### Gerris/QSim boundary conditions that are treated as constant within MIA-CSO
-### project. Parameter names according to definition in Gerris configuration
-### file "GerrisParam.xml"
 (
   VO2    = 0, 
-  ### "Sauerstoffgehalt" in mg/l
   SI     = 0, 
-  ### "Silizium" in mg/l
   VPH    = 7.44,
-  ### "pH-Wert"
   VX0    = 0, 
-  ### "Nitrosomonas" in mg/l
   VX02   = 0, 
-  ### "Nitrobacter" in mg/l
   ZOOIND = 0,
-  ### "Rotatorien/Zooplanktondichte" in Ind/l
   VKIGR  = 0.33,
-  ### "Kieselalgen/Anteil der Kieselalgen am Gesamt-Chlorophyll-a", 0..1
   LF     = 293.33,
-  ### Leitfaehigkeit" in mikro-S/cm
   MW     = 1.39,
-  ### "m-Wert" in mmol/l
   VNO2   = 0.21,
-  ### "Nitrit-N" in mg/l
   VNO3   = 1.1,
-  ### "Nitrat-N" in mg/l
   CA     = 36.04,
-  ### "Calcium" in mg/l
   CHLA   = 0,
-  ### "Chlorophyll-a" in mikro-g/l
   ANTBL  = 0.33
-  ### "Blaualgen/Anteil der Blaualgen am Gesamt-Chlorophyll-a", 0..1
 )
 {
   data.frame(VO2,    SI,    VPH,  VX0, VX02, ZOOIND, VKIGR, LF,   MW,  VNO2, 
              VNO3,   CA,    CHLA, ANTBL)
-  ### Data frame with columns \emph{VO2}, \emph{SI}, \emph{VPH}, \emph{VX0},
-  ### \emph{VX02}, \emph{ZOOIND}, \emph{VKIGR}, \emph{LF}, \emph{MW},
-  ### \emph{VNO2}, \emph{VNO3}, \emph{CA}, \emph{CHLA}, \emph{ANTBL} containing
-  ### the default values for non-simulated parameters in the first and only row
 }
 
-# hsGerrisConstBoundMatrix(): defaults for non-simulated parameters --------------
-hsGerrisConstBoundMatrix <- function
-### Character matrix containing default values for non-simulated parameters
-(
+# hsGerrisConstBoundMatrix -----------------------------------------------------
+
+#' Gerris Constant Boundary Matrix
+#' 
+#' Character matrix containing default values for non-simulated parameters
+#' 
+#' @param boundNames names of locations at which boundary conditions are given
+#' @param constPars values of parameters that are treated as constant boundary conditions
+#' @param tstamp.1 first timestamp
+#' @param tstamp.2 second timestamp
+#' @param tstamp.n last timestamp
+#' @export
+hsGerrisConstBoundMatrix <- function(
   boundNames,
-  ### names of locations at which boundary conditions are given
   constPars,
-  ### values of parameters that are treated as constant boundary conditions
   tstamp.1,
-  ### first timestamp
   tstamp.2,
-  ### second timestamp
   tstamp.n
-  ### last timestamp
 )
 {
   ## number of locations at which boundary conditions are given
@@ -115,24 +107,29 @@ hsGerrisConstBoundMatrix <- function
   mat
 }
 
-# hsCreateGerrisInputConstParsCsv() --------------------------------------------
-hsCreateGerrisInputConstParsCsv <- function # create Gerris input file for constant parameters
-### Create Gerris input file containing boundary conditions for non-simulated
-### water quality parameters
-(
+# hsCreateGerrisInputConstParsCsv ----------------------------------------------
+
+#' Create Gerris Input File for Constant Parameters
+#' 
+#' Create Gerris input file containing boundary conditions for non-simulated
+#'   water quality parameters
+#' 
+#' @param csvExample path to example csv file containing names of Gerris boundary conditions
+#'   in first row, starting in second column (first column is timestamp)  
+#' @param csvOut full path to csv file to which non-simulated parameters are to be written.
+#'   If missing, this function returns a character matrix containing the
+#'   file content.
+#' @param constParVals Data frame with columns \emph{VO2}, \emph{SI}, \emph{VPH}, \emph{VX0},
+#'   \emph{VX02}, \emph{ZOOIND}, \emph{VKIGR}, \emph{LF}, \emph{MW},
+#'   \emph{VNO2}, \emph{VNO3}, \emph{CA}, \emph{CHLA}, \emph{ANTBL} containing
+#'   the values for non-simulated parameters in the first and only row.
+#'   Default: result of hsGerrisConstParsMia().
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' @export
+hsCreateGerrisInputConstParsCsv <- function(
   csvExample,
-  ### path to example csv file containing names of Gerris boundary conditions
-  ### in first row, starting in second column (first column is timestamp)  
   csvOut = NULL,
-  ### full path to csv file to which non-simulated parameters are to be written.
-  ### If missing, this function returns a character matrix containing the
-  ### file content.
   constParVals = hsGerrisConstParsMia(),
-  ### Data frame with columns \emph{VO2}, \emph{SI}, \emph{VPH}, \emph{VX0},
-  ### \emph{VX02}, \emph{ZOOIND}, \emph{VKIGR}, \emph{LF}, \emph{MW},
-  ### \emph{VNO2}, \emph{VNO3}, \emph{CA}, \emph{CHLA}, \emph{ANTBL} containing
-  ### the values for non-simulated parameters in the first and only row.
-  ### Default: result of hsGerrisConstParsMia().
   dbg = TRUE
 )
 {
@@ -172,33 +169,38 @@ hsCreateGerrisInputConstParsCsv <- function # create Gerris input file for const
   }
 }
 
-# hsCreateGerrisInputFile() ----------------------------------------------------
-hsCreateGerrisInputFile <- function # Write file for Gerris import
-### Write a file for Gerris import based on a database table generated by
-### StatAnalysis-evaluation "IwToQSim".
-(
+# hsCreateGerrisInputFile ------------------------------------------------------
+
+#' Write File for Gerris Import
+#' 
+#' Write a file for Gerris import based on a database table generated by
+#'   StatAnalysis-evaluation "IwToQSim".
+#' 
+#' @param mdb full path to MS Access database containing table with required
+#'   data
+#' @param tbl name of table to be exported to csv file
+#' @param gerrisParID Gerris parameter ID: one of "OBSB", "OCSB", "VNH4",
+#'   "GESN", "GELP", "GESP", "SS", "Q"
+#' @param csv.dir path to directory to which output file is to be written
+#' @param csv.file optional name for output file, default:
+#'   "forGerrisImport_<gerrisParID>.csv"
+#' @param writeFile only if TRUE, a file is written, otherwise the corresponding
+#'   data is only returned by this function but not written to file.
+#' @param tsFormat format of timestamp to be used in output file (\%d = day, \%m =
+#'   month, \%Y = year, \%H = hour, \%M = minute, \%S = second)
+#' @param subst.na string value by which NULL values in table are subsubstituted
+#'   in the output file
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' @export
+hsCreateGerrisInputFile <- function(
   mdb,
-  ### full path to MS Access database containing table with required data
   tbl,
-  ### name of table to be exported to csv file
   gerrisParID,
-  ### Gerris parameter ID: one of "OBSB", "OCSB", "VNH4", "GESN", "GELP",
-  ### "GESP", "SS", "Q"
   csv.dir,
-  ### path to directory to which output file is to be written
   csv.file = paste0("forGerrisImport_", gerrisParID, ".csv"),
-  ### optional name for output file, default:
-  ### "forGerrisImport_<gerrisParID>.csv"
   writeFile = TRUE,
-  ### only if TRUE, a file is written, otherwise the corresponding data is only
-  ### returned by this function but not written to file.
-  #tsFormat = "%d.%m.%Y %H:%M",
   tsFormat = .defaultTimeFormat(),
-  ### format of timestamp to be used in output file (%d = day, %m = month, %Y =
-  ### year, %H = hour, %M = minute, %S = second)
   subst.na = "",
-  ### string value by which NULL values in table are subsubstituted in the
-  ### output file
   dbg = FALSE
 )
 {
@@ -248,58 +250,62 @@ hsCreateGerrisInputFile <- function # Write file for Gerris import
   "%d.%m.%Y %H:%M"
 }
 
-# hsCreateGerrisInputFiles() ------------------------------------------------------
-hsCreateGerrisInputFiles <- function
-### Create Gerris input files from database containing tables prepared by 
-### StatAna-Evaluation "eIwToQSim"
-#@2012-04-24;HSB;moved from hsIwToQsim.R
-(
+# hsCreateGerrisInputFiles -----------------------------------------------------
+
+#' Create Gerris Input Files
+#' 
+#' Create Gerris input files from database containing tables prepared by 
+#'   StatAna-Evaluation "eIwToQSim"
+#' 
+#' @param mdb full path to MS Access database (.mdb) containing tables prepared
+#'   by StatAna-Evaluation "eIwToQSim"
+#' @param csv.dir output directory to which database tables are to be exported
+#'   in CSV format
+#' @param tblQ name of table containing flows Q in m3/s; default: "tbl_Q_m3_s"
+#' @param tblBOD name of table containing BOD concentrations in mg/L; default:
+#'   "tbl_c_BOD_tot_mg_L"
+#' @param tblCOD name of table containing COD concentrations in mg/L; default:
+#'   "tbl_c_COD_tot_mg_L"
+#' @param tblNH4N name of table containing NH4-N concentrations in mg/L;
+#'   default: "tbl_c_NH4N_mg_L"
+#' @param tblNges name of table containing N total concentrations in mg/L;
+#'   default: "tbl_c_NGES_mg_L"
+#' @param tblTPdis name of table containing total P (dissolved) concentrations
+#'   in mg/L; default: "tbl_c_TP_dis_mg_L"
+#' @param tblTPtot name of table containing total P concentrations in mg/L;
+#'   default: "tbl_c_TP_tot_mg_L"
+#' @param tblTSS name of table containing TSS concentrations in mg/L; default:
+#'   "tbl_c_TSS_mg_L"
+#' @param csv.basename basename of file(s) to be created in \emph{csv.dir};
+#'   default: "forGerrisImport". For flows, "_Hydrax" will be appended to the
+#'   basename, and for concentrations of water quality parameters "_QSim_<par>",
+#'   where <par> is one of "OBSB", "OCSB", "VNH4", "GESN", "GELP", "GESP", "SS".
+#'   To the file containing concentrations of all the water quality parameters
+#'   "_QSim_all" is appended.
+#' @param separate if TRUE, one file per parameter is created.
+#' @param overall if TRUE, one file containing all parameters is created.
+#' @param tsFormat format of timestamp to be used in output file (\%d = day, \%m
+#'   = month, \%Y = year, \%H = hour, \%M = minute, \%S = second)
+#' @param subst.na substitution value for NA values
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' @export
+hsCreateGerrisInputFiles <- function(
   mdb, 
-  ### full path to MS Access database (.mdb) containing tables prepared by 
-  ### StatAna-Evaluation "eIwToQSim"
   csv.dir,
-  ### output directory to which database tables are to be exported in CSV format
   tblQ = "tbl_Q_m3_s",
-  ### name of table containing flows Q in m3/s; default: "tbl_Q_m3_s"
   tblBOD = "tbl_c_BOD_tot_mg_L",
-  ### name of table containing BOD concentrations in mg/L; default:
-  ### "tbl_c_BOD_tot_mg_L"
   tblCOD = "tbl_c_COD_tot_mg_L", 
-  ### name of table containing COD concentrations in mg/L; default:
-  ### "tbl_c_COD_tot_mg_L"
   tblNH4N = "tbl_c_NH4N_mg_L",
-  ### name of table containing NH4-N concentrations in mg/L; default:
-  ### "tbl_c_NH4N_mg_L"
   tblNges = "tbl_c_NGES_mg_L",
-  ### name of table containing N total concentrations in mg/L; default:
-  ### "tbl_c_NGES_mg_L"
   tblTPdis = "tbl_c_TP_dis_mg_L",
-  ### name of table containing total P (dissolved) concentrations in mg/L;
-  ### default: "tbl_c_TP_dis_mg_L"
   tblTPtot = "tbl_c_TP_tot_mg_L",    
-  ### name of table containing total P concentrations in mg/L; default:
-  ### "tbl_c_TP_tot_mg_L"
   tblTSS = "tbl_c_TSS_mg_L",
-  ### name of table containing TSS concentrations in mg/L; default:
-  ### "tbl_c_TSS_mg_L"
   csv.basename = "forGerrisImport",
-  ### basename of file(s) to be created in \emph{csv.dir}; default: 
-  ### "forGerrisImport". For flows, "_Hydrax" will be appended to the basename,
-  ### and for concentrations of water quality parameters "_QSim_<par>", where
-  ### <par> is one of "OBSB", "OCSB", "VNH4", "GESN", "GELP", "GESP", "SS". To
-  ### the file containing concentrations of all the water quality parameters
-  ### "_QSim_all" is appended.
   separate = TRUE,
-  ### if TRUE, one file per parameter is created.
   overall = TRUE,
-  ### if TRUE, one file containing all parameters is created.
   tsFormat = .defaultTimeFormat(),
-  ### format of timestamp to be used in output file (%d = day, %m = month, %Y =
-  ### year, %H = hour, %M = minute, %S = second)  
   subst.na = "",
-  ### substitution value for NA values
   dbg = FALSE
-  ### if TRUE, debug messages are shown
 )
 {
   ## assign table names to QSim parameter acronyms
@@ -359,7 +365,7 @@ hsCreateGerrisInputFiles <- function
     kwb.utils::catIf(dbg, "ok.\n")
   }  
 
-  ## write file for Q separately
+  # Write file for Q separately
   if (tblQ != "") {
     res <- hsCreateGerrisInputFile(
       mdb, 
@@ -375,35 +381,43 @@ hsCreateGerrisInputFiles <- function
   }    
 }
 
-# hsRowLen() -------------------------------------------------------------------
-hsRowLen <- function # row length in InfoWorks result CSV file
-### length of a data row in the InfoWorks result CSV file in bytes
-#@2012-01-12: renamed from hs_R
-(
-  colWidth,                        ##<< width of a data column in bytes
-  colNum,                          ##<< number of data columns
-  tsFormat = "2011-12-31 23:59:59" ##<< string representing a timestamp
-) 
+# hsRowLen ---------------------------------------------------------------------
+
+#' Row Length in InfoWorks Result CSV File
+#' 
+#' length of a data row in the InfoWorks result CSV file in bytes
+#' 
+#' @param colWidth width of a data column in bytes
+#' @param colNum number of data columns
+#' @param tsFormat string representing a timestamp
+#' @return Number of bytes needed for one row of an InfoWorks result CSV file with
+#'   \emph{colNum} data columns of \emph{colWidth} bytes each and a timestamp
+#'   column of format according to the example timestamp \emph{tstamp}. 
+#' @export
+hsRowLen <- function(colWidth, colNum, tsFormat = "2011-12-31 23:59:59") 
 {
   ## 21 is the number of bytes needed for the extra column counting the seconds
   ## since simulation begin that is always contained in an InfoWorks result CSV file.
   (colWidth + 1) * colNum + nchar(tsFormat) + 21 + 2 # inclusive EOL
-  ### Number of bytes needed for one row of an InfoWorks result CSV file with
-  ### \emph{colNum} data columns of \emph{colWidth} bytes each and a timestamp
-  ### column of format according to the example timestamp \emph{tstamp}. 
 }
 
-# hsFileSize() -----------------------------------------------------------------
-hsFileSize <- function # size of InfoWorks result CSV file
-### Size of an InfoWorks result CSV file in bytes
-#@2012-01-12: renamed from hs_B
-(
-  nDays,       ##<< number of days
-  bytesHeader, ##<< length of header line in bytes
-  bytesRow,    ##<< length of data row in bytes
-  timestep,    ##<< result timestep in seconds
-  dbg = FALSE
-) 
+# hsFileSize -------------------------------------------------------------------
+
+#' Size of InfoWorks Result CSV File
+#' 
+#' Size of an InfoWorks result CSV file in bytes
+#' 
+#' @param nDays number of days
+#' @param bytesHeader length of header line in bytes
+#' @param bytesRow length of data row in bytes
+#' @param timestep result \code{timestep} in seconds
+#' 
+#' @return Size of an InfoWorks result CSV file over \emph{nDays} with a result
+#'   \code{timestep} of \emph{timestep} seconds in bytes if the header file 
+#'   is \emph{bytesHeader} and each data row is \emph{bytesRow} bytes long.
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' @export
+hsFileSize <- function(nDays, bytesHeader, bytesRow, timestep, dbg = FALSE) 
 {
   # one last line for 00:00:00 of last day
   nRows <- nDays * (24*60*60) / timestep + 1
@@ -411,62 +425,75 @@ hsFileSize <- function # size of InfoWorks result CSV file
   kwb.utils::catIf(dbg, "Number of rows:", nRows, "\n")
   
   nRows * bytesRow + bytesHeader
-  ### Size of an InfoWorks result CSV file over \emph{nDays} with a result
-  ### timestep of \emph{timestep} seconds in bytes if the header file 
-  ### is \emph{bytesHeader} and each data row is \emph{bytesRow} bytes long.
 }
 
-# hsDaysInFile() ---------------------------------------------------------------
-hsDaysInFile <- function # number of days in InfoWorks result CSV file
-### number of days \dQuote{in} InfoWorks result CSV file
-#@2012-01-12: renamed from hs_D
-(
-  bytesFile,   ##<< file length in bytes
-  bytesHeader, ##<< length of header line in bytes
-  bytesRow,    ##<< length of data row in bytes
-  timestep     ##<< result timestep in seconds
-) 
+# hsDaysInFile -----------------------------------------------------------------
+
+#' Number of Days in InfoWorks Result CSV File
+#' 
+#' @param bytesFile file length in bytes
+#' @param bytesHeader length of header line in bytes
+#' @param bytesRow length of data row in bytes
+#' @param timestep result \code{timestep} in seconds
+#' 
+#' @return number of days \dQuote{contained} in an InfoWorks result CSV file of size
+#'   \emph{bytesFile} with a header line of \emph{bytesHeader} bytes length, 
+#'   each data row being \emph{bytesRow} bytes long and a result \code{timestep} of
+#'   \emph{timestep} seconds.
+#' @export
+hsDaysInFile <- function(bytesFile, bytesHeader, bytesRow, timestep) 
 {
   ((bytesFile - bytesHeader) / bytesRow - 1) * timestep / (24 * 60 * 60)
-  ### number of days \dQuote{contained} in an InfoWorks result CSV file of size
-  ### \emph{bytesFile} with a header line of \emph{bytesHeader} bytes length, 
-  ### each data row being \emph{bytesRow} bytes long and a result timestep of
-  ### \emph{timestep} seconds.
 }
 
-# hsTsInFile() -----------------------------------------------------------------
-hsTsInFile <- function # timestep in InfoWorks result CSV file
-### result timestep in InfoWorks result CSV file
-#@2012-01-12: renamed from hs_T
-(
-  bytesFile,   ##<< file length in bytes
-  bytesHeader, ##<< length of header line in bytes
-  bytesRow,    ##<< lengh of data row in bytes
-  nDays        ##<< number of days
-) 
+# hsTsInFile -------------------------------------------------------------------
+
+#' Result Time Step in InfoWorks Result CSV File
+#' 
+#' @param bytesFile file length in bytes
+#' @param bytesHeader length of header line in bytes
+#' @param bytesRow lengh of data row in bytes
+#' @param nDays number of days
+#' 
+#' @return Returns the (possibly) applied result timestep of an InfoWorks simulation 
+#'   depending on the maximal allowed InfoWorks result CSV file size \emph{bytesFile}
+#'   in bytes, on the number \emph{nDays} of days to simulate and on the size
+#'   \emph{bytesHeader} and \emph{bytesRow} of the header and of a data
+#'   line, respectively.
+#' @export
+hsTsInFile <- function(bytesFile, bytesHeader, bytesRow, nDays) 
 {
   (24 * 60 * 60) * nDays / ((bytesFile - bytesHeader) / bytesRow - 1)
-  ### Returns the (possibly) applied result timestep of an InfoWorks simulation 
-  ### depending on the maximal allowed InfoWorks result CSV file size \emph{bytesFile}
-  ### in bytes, on the number \emph{nDays} of days to simulate and on the size
-  ### \emph{bytesHeader} and \emph{bytesRow} of the header and of a data
-  ### line, respectively.
 }
 
-# hsIwResultFileSize() ---------------------------------------------------------
-hsIwResultFileSize <- function # InfoWorks result CSV file size
-### Size of an InfoWorks result CSV file depending on the simulated time period
-### between \emph{dateFirst} and \emph{dateLast}, the result timestep 
-### \emph{timestep} applied and the number \emph{nDataCol} of data columns in 
-### the file.
-(
-  dateFirst, ##<< first date (day) to be simulated in ISO-format: \emph{yyyy-mm-dd}
-  dateLast,  ##<< last date (day) to be simulated in ISO-format: \emph{yyyy-mm-dd}
-  timestep,  ##<< result timestep in seconds 
-  nDataCol,  ##<< number of data columns (time-columns excluded) in the InfoWorks result CSV file
-  bytesHeader = -1, ##<< length of header line in bytes
-  tstamp = "yyyy-mm-dd hh:nn:ss", ##<< string representing an example timestamp  
-  colWidth = 12, ##<< width of a data column in bytes
+# hsIwResultFileSize -----------------------------------------------------------
+
+#' InfoWorks Result CSV File Size
+#' 
+#' Size of an InfoWorks result CSV file depending on the simulated time period
+#'   between \emph{dateFirst} and \emph{dateLast}, the result \code{timestep} 
+#'   \emph{timestep} applied and the number \emph{nDataCol} of data columns in 
+#'   the file.
+#' 
+#' @param dateFirst first date (day) to be simulated in ISO-format: \emph{yyyy-mm-dd}
+#' @param dateLast last date (day) to be simulated in ISO-format: \emph{yyyy-mm-dd}
+#' @param timestep result \code{timestep} in seconds
+#' @param nDataCol number of data columns (time-columns excluded) in the InfoWorks result CSV file
+#' @param bytesHeader length of header line in bytes
+#' @param tstamp string representing an example timestamp
+#' @param colWidth width of a data column in bytes
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' @return List with elements \emph{Bytes}, \emph{kB}, \emph{MB}, \emph{GB}
+#'   giving the requested file size in the according unit.
+#' @export
+hsIwResultFileSize <- function(
+  dateFirst,
+  dateLast,
+  timestep,
+  nDataCol,
+  bytesHeader = -1,
+  tstamp = "yyyy-mm-dd hh:nn:ss",
+  colWidth = 12,
   dbg = FALSE
 ) 
 {
@@ -485,18 +512,24 @@ hsIwResultFileSize <- function # InfoWorks result CSV file size
     kB = round(nBytes / (div <- div * 1024), 1), 
     MB = round(nBytes / (div <- div * 1024), 1),
     GB = round(nBytes / (div <- div * 1024), 1))
-  ### List with elements \emph{Bytes}, \emph{kB}, \emph{MB}, \emph{GB}
-  ### giving the requested file size in the according unit.
 }
 
-# hsPlotIwFileSizeVsTsAndPeriod() ----------------------------------------------
-hsPlotIwFileSizeVsTsAndPeriod <- function # IW file size vs. time step, period
-### Plot showing InfoWorks result CSV file size vs. different combinations of
-### timestep and simulated time period
-(
-  nCols, ##<< number of data columns in the InfoWorks result CSV file
-  colWidth = 12, ##<< width of a data column in bytes
-  tsFormat = "01.01.2011 00:00:00", ##<< string representing a timestamp
+# hsPlotIwFileSizeVsTsAndPeriod ------------------------------------------------
+
+#' IW File Size vs. Time Step, Period
+#' 
+#' Plot showing InfoWorks result CSV file size vs. different combinations of
+#'   timestep and simulated time period
+#' 
+#' @param nCols number of data columns in the InfoWorks result CSV file
+#' @param colWidth width of a data column in bytes
+#' @param tsFormat string representing a timestamp
+#' @param bytesHeader length of header line in bytes
+#' @export
+hsPlotIwFileSizeVsTsAndPeriod <- function(
+  nCols,
+  colWidth = 12,
+  tsFormat = "01.01.2011 00:00:00",
   bytesHeader = -1
 ) 
 {
