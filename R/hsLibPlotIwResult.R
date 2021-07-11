@@ -1,14 +1,16 @@
-# hsNameFilter() ---------------------------------------------------------------
-hsNameFilter <- function
-### include / exclude elements from vector by patterns
-(
-  x, 
-  ### vector of character
-  posPtrn = NULL, 
-  ### pattern matching elements to be included
-  negPtrn = NULL
-  ### pattern matching elements to be excluded
-) 
+# hsNameFilter -----------------------------------------------------------------
+
+#' Name Filter
+#' 
+#' Include / exclude elements from vector by patterns
+#' 
+#' @param x vector of character
+#' @param posPtrn pattern matching elements to be included
+#' @param negPtrn pattern matching elements to be excluded
+#' 
+#' @return elements of \emph{x} matching \emph{posPtrn} and not matching \emph{negPtrn}
+#' 
+hsNameFilter <- function(x, posPtrn = NULL, negPtrn = NULL) 
 {
   if (! is.null(posPtrn)) {
     for (pPtrn in posPtrn)
@@ -19,60 +21,67 @@ hsNameFilter <- function
       x <- grep(nPtrn, x, value = TRUE, invert = TRUE)
   }
   x
-  ### elements of \emph{x} matching \emph{posPtrn} and not matching \emph{negPtrn}
 }
 
-# hsTimeBarPlot() --------------------------------------------------------------
-hsTimeBarPlot <- function # plot type 1
-### plot type 1: boxes with mean flow as height and event duration as width
-(
+# hsTimeBarPlot ----------------------------------------------------------------
+
+#' Plot Type 1
+#' 
+#' Plot type 1: boxes with mean flow as \code{height} and event duration as
+#' width
+#'
+#' @param t1 begin times of bars
+#' @param t2 end times of bars
+#' @param height bar heights
+#' @param tlim limits of time axis. Default: c(min(\code{t1}), max(\code{t2}))
+#' @param ylim limits of y axis, Default: c(min(\code{height}),
+#'   max(\code{height}))
+#' @param ylog if TRUE, y axis is scaled logarithmically, else linearly
+#' @param ymult numbers to be multiplied by exponents of ten for labelling of y
+#'   axis when \emph{ylog} is TRUE
+#' @param main plot title
+#' @param tlab label of time axis
+#' @param ylab label of y axis
+#' @param time.format format of time axis labels
+#' @param tlab.mindist minimum "time distance" between time labels, in seconds
+#' @param col bar colour
+#' @param cex.all general expansion factor to be applied to \code{cex.legend},
+#'   \code{cex.text}, \code{cex.axis}, if not given
+#' @param cex.legend expansion factor for legend texts
+#' @param cex.text expansion factor of texts within plot (bar numbers)
+#' @param cex.axis expansion factor of axis labels
+#' @param legend.values values to be shown in legend, default: \code{height}
+#'   values
+#' @param legend.sort if TRUE, legend is sorted decreasingly by
+#'   \code{legend.values}
+#' @param legend.format format string to be used by sprintf for generation of
+#'   legend entries from legend values, e.g. "V = \%8.0f m3"
+#' @param legend.title legend title
+#' @param mar plot margins
+#' 
+hsTimeBarPlot <- function(
   t1, 
-  ### begin times of bars
   t2,
-  ### end times of bars
   height,
-  ### bar heights
   tlim = c(min(t1), max(t2)), 
-  ### limits of time axis. Default: c(min(t1), max(t2))
   ylim = NULL, # c(min(height), max(height)), 
-  ### limits of y axis, Default: c(min(height), max(height))
   ylog = TRUE,
-  ### if TRUE, y axis is scaled logarithmically, else linearly
   ymult = c(1, 2, 3, 5),
-  ### numbers to be multiplied by exponents of ten for labelling of y axis when
-  ### \emph{ylog} is TRUE
   main = "hsTimeBarPlot",
-  ### plot title
   tlab = "time",
-  ### label of time axis
   ylab = "height",  
-  ### label of y axis
   time.format = .defaultDateFormat(),
-  ### format of time axis labels
   tlab.mindist = 86400,
-  ### minimum "time distance" between time labels, in seconds
   col = "grey",
-  ### bar colour
   cex.all = 0.8,
-  ### general expansion factor to be applied to cex.legend, cex.text, cex.axis,
-  ### if not given
   cex.legend = cex.all,
-  ### expansion factor for legend texts
   cex.text = cex.all,
-  ### expansion factor of texts within plot (bar numbers)
   cex.axis = cex.all,
-  ### expansion factor of axis labels
   legend.values = height,
-  ### values to be shown in legend, default: height values
   legend.sort = TRUE,
-  ### if TRUE, legend is sorted decreasingly by legend.values
   legend.format = .defaultLegendFormat(),
-  ### format string to be used by sprintf for generation of legend entries from
-  ### legend values, e.g. "V = %8.0f m3"
   legend.title = "Legend:",
-  ### legend title
   mar = c(6,5,5,10)
-  ### plot margins
 ) 
 {
   # Set plot area with wide right margin for legend
@@ -191,17 +200,18 @@ hsTimeBarPlot <- function # plot type 1
   "height: %f"
 }
 
-# hsGetIwResult() --------------------------------------------------------------
-hsGetIwResult <- function 
-### hsGetIwResult
-(
-  file,
-  ### file
-  columns = NULL,
-  ### defalut: NULL
-  skip.columns = "Seconds",
-  ### default: "Seconds"
-  dbg = FALSE
+# hsGetIwResult ----------------------------------------------------------------
+
+#' Get Infoworks Result
+#' 
+#' @param file \code{file}
+#' @param columns defalut: NULL
+#' @param skip.columns default: "Seconds"
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' @return data frame
+#' 
+hsGetIwResult <- function (
+  file, columns = NULL, skip.columns = "Seconds", dbg = FALSE
 )
 {
   ## Load result file
@@ -232,21 +242,22 @@ hsGetIwResult <- function
     }
   }
   
-  ## Return data frame
   df
 }
 
-# hsIntegrals() ----------------------------------------------------------------
-hsIntegrals <- function
-### Calculates the integrals (sum of all value columns within event's time 
-### interval, multiplied with "signal width" of events)
-(
-  data,
-  ### time-series data with timestamp in first column
-  evts,
-  ### event data describing events contained in \emph{data}
-  dbg = FALSE
-)
+# hsIntegrals ------------------------------------------------------------------
+
+#' Integrals
+#' 
+#' Calculates the integrals (sum of all value columns within event's time 
+#'   interval, multiplied with "signal width" of events)
+#' 
+#' @param data time-series \code{data} with timestamp in first column
+#' @param evts event \code{data} describing events contained in \emph{data}
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' @return vector of integral values with one value per event. Length of vector
+#'   corresponds to number of rows in \emph{evts}
+hsIntegrals <- function(data, evts, dbg = FALSE)
 {
   # get signal width from event data
   sigWidth <- kwb.event::hsSigWidth(evts)
@@ -280,36 +291,36 @@ hsIntegrals <- function
     eIntegrals <- c(eIntegrals, eIntegral)
   }
   
-  ### Vector of integral values with one value per event. Length of vector 
-  ### corresponds to number of rows in \emph{evts}
   eIntegrals
 }
 
-# hsIwParNameMap() -------------------------------------------------------------
-hsIwParNameMap <- function # parameter name mapping
-### mapping between parameter names used in table names in temporary mdb
-### (written to by StatAna) and parameter acronyms used in InfoWorks result 
-### csv files.
-(
-) 
+# hsIwParNameMap ---------------------------------------------------------------
+
+#' Parameter Name Mapping
+#' 
+#' Mapping between parameter names used in table names in temporary mdb
+#'   (written to by StatAna) and parameter acronyms used in InfoWorks result 
+#'   csv files.
+#' 
+hsIwParNameMap <- function() 
 { 
   data.frame(
     mdbName = c("flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", "TP_tot", "TSS"),
     iwrName = c("flow", "bodtot", "codtot", "nh4tot", "tkntot", "tphdis", "tphtot", "sf1"),
-    stringsAsFactors = FALSE)  
+    stringsAsFactors = FALSE
+  )
 }
 
-# hsGetIwResultAvgAboveZero() --------------------------------------------------
-hsGetIwResultAvgAboveZero <- function
-### hsGetIwResultAvgAboveZero
-(
-  src, 
-  ### either full path to mdb or to  directory in which InfoWorks result files
-  ### (csv) are located
-  type
-  ### one of "flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", 
-  ### "TP_tot", "TSS"
-) 
+# hsGetIwResultAvgAboveZero ----------------------------------------------------
+
+#' Get Infoworks Result Average Above Zero
+#' 
+#' @param src either full path to mdb or to  directory in which InfoWorks result files
+#'   (csv) are located
+#' @param type one of "flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", 
+#'   "TP_tot", "TSS"
+#' 
+hsGetIwResultAvgAboveZero <- function(src, type) 
 {
   if (length(grep("\\.(mdb|accdb)$", src)) == 1) {
     #cat("Reading data from mdb-file ", src, "...\n")
@@ -324,14 +335,18 @@ hsGetIwResultAvgAboveZero <- function
   data[rowSums(data[, -1], na.rm = TRUE) > 0, ]  
 }
 
-# hsGetIwResultAvgFromMdb() ----------------------------------------------------
-hsGetIwResultAvgFromMdb <- function
-### hsGetIwResultAvgFromMdb
-(
+# hsGetIwResultAvgFromMdb ------------------------------------------------------
+
+#' Get Infoworks Result Average From MS Access Database
+#' 
+#' @param mdb \code{mdb}
+#' @param type \code{type}
+#' @param tblQ name of database table containing flows
+#' @param tblL name of database table containing loads
+#' @param skipCols vector of patterns matching names of columns to be skipped
+hsGetIwResultAvgFromMdb <- function(
   mdb, 
-  ### mdb
   type,
-  ### type
   tblQ = "tbl_05_Q_bei_Ueberlauf_m3_s", # "tbl_07_Q_inCsoEvents_m3_s"
   tblL = paste("tbl_02_15minMittel_L",  # "tbl_03_15minAvg_L"
                type, "kg_s", sep = "_"),
@@ -367,21 +382,21 @@ hsGetIwResultAvgFromMdb <- function
   
   cat("ok.\n")
   
-  return(res)
+  res
 }
 
-# hsGetIwResultAvgFromCsv() ----------------------------------------------------
-hsGetIwResultAvgFromCsv <- function
-### hsGetIwResultAvgFromCsv
-(
-  csvdir,
-  ### directory in which InfoWorks result files (csv) are located
-  type,  
-  ### one of "flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", 
-  ### "TP_tot", "TSS"
-  qthreshold = 0.003,
-  ### threshold for Q values
-  dbg = TRUE
+# hsGetIwResultAvgFromCsv ------------------------------------------------------
+
+#' Get Infoworks Result Average From CSV
+#' 
+#' @param csvdir directory in which InfoWorks result files (csv) are located
+#' @param type one of "flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", 
+#'   "TP_tot", "TSS"
+#' @param qthreshold threshold for Q values
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' 
+hsGetIwResultAvgFromCsv <- function(
+  csvdir, type,  qthreshold = 0.003, dbg = TRUE
 )
 {    
   # Load mapping between parameter names in tmp mdb and InfoWorks result files
@@ -427,7 +442,7 @@ hsGetIwResultAvgFromCsv <- function
   
   ## Calculate 15 min-means
   cat(sprintf("Calculating 15-min means of %s-values... ", type))
-  data <- hsGroupByInterval(data.all, interval = 15*60, FUN = mean, 
+  data <- kwb.base::hsGroupByInterval(data.all, interval = 15*60, FUN = mean, 
                             offset1 = -5*60, offset2 = 5*60)
   cat("ok.\n")
   
@@ -440,30 +455,32 @@ hsGetIwResultAvgFromCsv <- function
     data[, -1] <- vm     
   }
   
-  ## return data
   data
 }
 
-# hsIwPlot1() ------------------------------------------------------------------
-hsIwPlot1 <- function
-### hsIwPlot1
-(
+# hsIwPlot1 --------------------------------------------------------------------
+
+#' Infoworks Plot 1
+#' 
+#' @param data \code{data}
+#' @param allIntegrals \code{allIntegrals}
+#' @param evts \code{evts}
+#' @param type default: 2
+#' @param basemain \code{basemain}
+#' @param legend.sort default: FALSE
+#' @param ylog default: FALSE
+#' @param yBottom default: ifelse(\code{ylog}, 0.0001, 0)
+#' @param cex.legend expansion factor for legend texts
+#' 
+hsIwPlot1 <- function(
   data, 
-  ### data
   allIntegrals,
-  ### allIntegrals
   evts,
-  ### evts
   type = 2,
-  ### default: 2
   basemain,
-  ### basemain
   legend.sort = FALSE,
-  ### default: FALSE
   ylog = FALSE,
-  ### default: FALSE
   yBottom = ifelse(ylog, 0.0001, 0),
-  ### default: ifelse(ylog, 0.0001, 0)
   cex.legend = 0.55
 ) 
 {
@@ -540,20 +557,22 @@ hsIwPlot1 <- function
   }
 }
 
-# hsIwPlot2() ------------------------------------------------------------------
-hsIwPlot2 <- function
-### hsIwPlot2
-(
+# hsIwPlot2 --------------------------------------------------------------------
+
+#' Infoworks Plot 2
+#' 
+#' @param allIntegrals \code{allIntegrals}
+#' @param evts \code{evts}
+#' @param plotTotal default: TRUE
+#' @param plotEvents default: FALSE
+#' @param pars default: c("TSS", "COD_tot", "BOD_tot", "TKN_tot", "NH4N", "TP_tot", "TP_dis")
+#' 
+hsIwPlot2 <- function(
   allIntegrals,
-  ### allIntegrals
   evts,
-  ### evts
   plotTotal = TRUE, 
-  ### default: TRUE
   plotEvents = FALSE, 
-  ### default: FALSE
   pars = c("TSS", "COD_tot", "BOD_tot", "TKN_tot", "NH4N", "TP_tot", "TP_dis")
-  ### default: c("TSS", "COD_tot", "BOD_tot", "TKN_tot", "NH4N", "TP_tot", "TP_dis")
 ) 
 {
   # save current setting of graphical parameters
@@ -620,14 +639,15 @@ hsIwPlot2 <- function
   graphics::par(oldpar)    
 }
 
-# hsIwPlot3() ------------------------------------------------------------------
-hsIwPlot3 <- function
-### hsIwPlot3
-(
-  allIntegrals,
-  ### allIntegrals
-  boxplot.range = 0
-) 
+# hsIwPlot3 --------------------------------------------------------------------
+
+#' Infoworks Plot 3
+#' 
+#' @param allIntegrals \code{allIntegrals}
+#' @param boxplot.range this determines how far the plot whiskers extend out
+#'   from the box. See argument \code{range} of \code{\link{barplot}}.
+#' 
+hsIwPlot3 <- function(allIntegrals, boxplot.range = 0) 
 {
   oldpar <- graphics::par(mfrow = c(1, 2))
   
@@ -657,18 +677,20 @@ hsIwPlot3 <- function
   graphics::par(oldpar)
 }
 
-# hsIwEventSummary() -----------------------------------------------------------
-hsIwEventSummary <- function # volume and mass load per event
-### volume and mass load per event
-(
-  src,
-  ### Data source; can be either path to mdb (filled by StatAna) or directory 
-  ### containing original csv files exported from InfoWorks  
-  mfpars = c("flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", 
-           "TP_tot", "TSS")
-  ### Vector of parameter acronyms; Default: c("flow", "BOD_tot", "COD_tot",
-  ### "NH4N", "TKN_tot", "TP_dis", "TP_tot", "TSS")  
-) 
+# hsIwEventSummary -------------------------------------------------------------
+
+#' Volume and Mass Load per Event
+#' 
+#' @param src Data source; can be either path to mdb (filled by StatAna) or
+#'   directory containing original csv files exported from InfoWorks
+#' @param mfpars Vector of parameter acronyms; Default: c("flow", "BOD_tot",
+#'   "COD_tot", "NH4N", "TKN_tot", "TP_dis", "TP_tot", "TSS")
+#' @return list with event list \emph{evts}, matrix \emph{allIntegrals}
+#'   containing volume and mass loads per event and data.frame \emph{iwdata}
+#'   containing all result data
+hsIwEventSummary <- function(src, mfpars = c(
+  "flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", "TP_tot", "TSS"
+)) 
 {
   # init result list
   allIntegrals <- NULL
@@ -686,9 +708,14 @@ hsIwEventSummary <- function # volume and mass load per event
     if (mfpar == "flow") {
       ## MR uses ">=" instead of ">" to compare time difference with event
       ## separation time -> evtSepOp = "ge" (greater than or equal to)
-      sigWidth <- minTimeStep(iwdata[[1]]) # 15*60
-      evts <- hsEvents(iwdata[[1]], evtSepTime = 6*3600, signalWidth = sigWidth,
-                       tUnit = "s", evtSepOp = "ge")
+      sigWidth <- kwb.datetime::minTimeStep(iwdata[[1]]) # 15*60
+      evts <- kwb.event::hsEvents(
+        iwdata[[1]], 
+        evtSepTime = 6*3600, 
+        signalWidth = sigWidth,
+        tUnit = "s", 
+        evtSepOp = "ge"
+      )
     }
     
     # Calculate integrals per event
@@ -703,34 +730,35 @@ hsIwEventSummary <- function # volume and mass load per event
     names(allIntegrals)[ncol(allIntegrals)] <- mfpar
   }
   
-  ### list with event list \emph{evts}, matrix \emph{allIntegrals} containing
-  ### volume and mass loads per event and data.frame \emph{iwdata} containing
-  ### all result data
   list(evts = evts, allIntegrals = allIntegrals, iwdata = iwdata)
 }
 
-# hsIwPlotAll() ----------------------------------------------------------------
-hsIwPlotAll <- function
-### hsIwPlotAll
-(
+# hsIwPlotAll ------------------------------------------------------------------
+
+#' Infoworks Plot All
+#' 
+#' @param src Data source; can be either path to mdb (filled by StatAna) or
+#'   directory containing original csv files exported from InfoWorks
+#' @param subtitle \code{subtitle}
+#' @param mfpars Vector of parameter acronyms; Default: c("flow", "BOD_tot",
+#'   "COD_tot", "NH4N", "TKN_tot", "TP_dis", "TP_tot", "TSS")
+#' @param ylog y axis logarithmic?
+#' @param type default: 2
+#' @param outpdf Path to output file (.pdf). Default: ""
+#' @param outdir Path to output directory. Default: ""
+#' @param legend.sort default: FALSE
+#' @param cex.legend expansion factor for legend texts
+#' 
+hsIwPlotAll <- function(
   src,
-  ### Data source; can be either path to mdb (filled by StatAna) or directory 
-  ### containing original csv files exported from InfoWorks
   subtitle = "",
-  ### subtitle
   mfpars = c("flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", 
              "TP_tot", "TSS"),
-  ### Vector of parameter acronyms; Default: c("flow", "BOD_tot", "COD_tot",
-  ### "NH4N", "TKN_tot", "TP_dis", "TP_tot", "TSS")
   ylog = FALSE,
-  ### y axis logarithmic?
   type = 2,
-  ### default: 2
   outpdf = "",
   outdir = "", 
-  ### default: ""
   legend.sort = FALSE,
-  ### default: FALSE
   cex.legend = 0.55
 ) 
 {
