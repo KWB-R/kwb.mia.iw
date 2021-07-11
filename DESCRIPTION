@@ -31,3 +31,5 @@ Remotes:
     github::kwb-r/kwb.event,
     github::kwb-r/kwb.plot,
     github::kwb-r/kwb.utils
+Encoding: UTF-8
+RoxygenNote: 7.1.1
