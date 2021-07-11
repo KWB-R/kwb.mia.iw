@@ -7,9 +7,8 @@
 #' @param x vector of character
 #' @param posPtrn pattern matching elements to be included
 #' @param negPtrn pattern matching elements to be excluded
-#' 
 #' @return elements of \emph{x} matching \emph{posPtrn} and not matching \emph{negPtrn}
-#' 
+#' @export
 hsNameFilter <- function(x, posPtrn = NULL, negPtrn = NULL) 
 {
   if (! is.null(posPtrn)) {
@@ -58,7 +57,7 @@ hsNameFilter <- function(x, posPtrn = NULL, negPtrn = NULL)
 #'   legend entries from legend values, e.g. "V = \%8.0f m3"
 #' @param legend.title legend title
 #' @param mar plot margins
-#' 
+#' @export
 hsTimeBarPlot <- function(
   t1, 
   t2,
@@ -209,7 +208,7 @@ hsTimeBarPlot <- function(
 #' @param skip.columns default: "Seconds"
 #' @param dbg if \code{TRUE}, debug messages are shown
 #' @return data frame
-#' 
+#' @export
 hsGetIwResult <- function (
   file, columns = NULL, skip.columns = "Seconds", dbg = FALSE
 )
@@ -257,6 +256,7 @@ hsGetIwResult <- function (
 #' @param dbg if \code{TRUE}, debug messages are shown
 #' @return vector of integral values with one value per event. Length of vector
 #'   corresponds to number of rows in \emph{evts}
+#' @export
 hsIntegrals <- function(data, evts, dbg = FALSE)
 {
   # get signal width from event data
@@ -302,6 +302,7 @@ hsIntegrals <- function(data, evts, dbg = FALSE)
 #'   (written to by StatAna) and parameter acronyms used in InfoWorks result 
 #'   csv files.
 #' 
+#' @export
 hsIwParNameMap <- function() 
 { 
   data.frame(
@@ -319,7 +320,7 @@ hsIwParNameMap <- function()
 #'   (csv) are located
 #' @param type one of "flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", 
 #'   "TP_tot", "TSS"
-#' 
+#' @export
 hsGetIwResultAvgAboveZero <- function(src, type) 
 {
   if (length(grep("\\.(mdb|accdb)$", src)) == 1) {
@@ -344,6 +345,7 @@ hsGetIwResultAvgAboveZero <- function(src, type)
 #' @param tblQ name of database table containing flows
 #' @param tblL name of database table containing loads
 #' @param skipCols vector of patterns matching names of columns to be skipped
+#' @export
 hsGetIwResultAvgFromMdb <- function(
   mdb, 
   type,
@@ -394,7 +396,7 @@ hsGetIwResultAvgFromMdb <- function(
 #'   "TP_tot", "TSS"
 #' @param qthreshold threshold for Q values
 #' @param dbg if \code{TRUE}, debug messages are shown
-#' 
+#' @export
 hsGetIwResultAvgFromCsv <- function(
   csvdir, type,  qthreshold = 0.003, dbg = TRUE
 )
@@ -471,7 +473,7 @@ hsGetIwResultAvgFromCsv <- function(
 #' @param ylog default: FALSE
 #' @param yBottom default: ifelse(\code{ylog}, 0.0001, 0)
 #' @param cex.legend expansion factor for legend texts
-#' 
+#' @export
 hsIwPlot1 <- function(
   data, 
   allIntegrals,
@@ -566,7 +568,7 @@ hsIwPlot1 <- function(
 #' @param plotTotal default: TRUE
 #' @param plotEvents default: FALSE
 #' @param pars default: c("TSS", "COD_tot", "BOD_tot", "TKN_tot", "NH4N", "TP_tot", "TP_dis")
-#' 
+#' @export
 hsIwPlot2 <- function(
   allIntegrals,
   evts,
@@ -646,7 +648,7 @@ hsIwPlot2 <- function(
 #' @param allIntegrals \code{allIntegrals}
 #' @param boxplot.range this determines how far the plot whiskers extend out
 #'   from the box. See argument \code{range} of \code{\link{barplot}}.
-#' 
+#' @export
 hsIwPlot3 <- function(allIntegrals, boxplot.range = 0) 
 {
   oldpar <- graphics::par(mfrow = c(1, 2))
@@ -688,6 +690,7 @@ hsIwPlot3 <- function(allIntegrals, boxplot.range = 0)
 #' @return list with event list \emph{evts}, matrix \emph{allIntegrals}
 #'   containing volume and mass loads per event and data.frame \emph{iwdata}
 #'   containing all result data
+#' @export
 hsIwEventSummary <- function(src, mfpars = c(
   "flow", "BOD_tot", "COD_tot", "NH4N", "TKN_tot", "TP_dis", "TP_tot", "TSS"
 )) 
@@ -748,7 +751,7 @@ hsIwEventSummary <- function(src, mfpars = c(
 #' @param outdir Path to output directory. Default: ""
 #' @param legend.sort default: FALSE
 #' @param cex.legend expansion factor for legend texts
-#' 
+#' @export
 hsIwPlotAll <- function(
   src,
   subtitle = "",

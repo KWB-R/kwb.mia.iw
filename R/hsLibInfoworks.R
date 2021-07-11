@@ -6,7 +6,7 @@
 #' @param n number by which each element of \emph{elements} is repeated
 #' 
 #' @return vector in which each element of \emph{elements} is repeated \emph{n}-times
-#' 
+#' @export
 hsRep <- function(elements, n) 
 {
   res <- NULL
@@ -38,12 +38,11 @@ hsRep <- function(elements, n)
 #' @param CA "Calcium" in mg/l
 #' @param CHLA "Chlorophyll-a" in mikro-g/l
 #' @param ANTBL "Blaualgen/Anteil der Blaualgen am Gesamt-Chlorophyll-a", 0..1
-#' 
 #' @return Data frame with columns \emph{VO2}, \emph{SI}, \emph{VPH}, \emph{VX0},
 #'   \emph{VX02}, \emph{ZOOIND}, \emph{VKIGR}, \emph{LF}, \emph{MW},
 #'   \emph{VNO2}, \emph{VNO3}, \emph{CA}, \emph{CHLA}, \emph{ANTBL} containing
 #'   the default values for non-simulated parameters in the first and only row
-#' 
+#' @export
 hsGerrisConstParsMia <- function
 (
   VO2    = 0, 
@@ -77,7 +76,7 @@ hsGerrisConstParsMia <- function
 #' @param tstamp.1 first timestamp
 #' @param tstamp.2 second timestamp
 #' @param tstamp.n last timestamp
-#' 
+#' @export
 hsGerrisConstBoundMatrix <- function(
   boundNames,
   constPars,
@@ -126,7 +125,7 @@ hsGerrisConstBoundMatrix <- function(
 #'   the values for non-simulated parameters in the first and only row.
 #'   Default: result of hsGerrisConstParsMia().
 #' @param dbg if \code{TRUE}, debug messages are shown
-#' 
+#' @export
 hsCreateGerrisInputConstParsCsv <- function(
   csvExample,
   csvOut = NULL,
@@ -192,7 +191,7 @@ hsCreateGerrisInputConstParsCsv <- function(
 #' @param subst.na string value by which NULL values in table are subsubstituted
 #'   in the output file
 #' @param dbg if \code{TRUE}, debug messages are shown
-#' 
+#' @export
 hsCreateGerrisInputFile <- function(
   mdb,
   tbl,
@@ -289,7 +288,7 @@ hsCreateGerrisInputFile <- function(
 #'   = month, \%Y = year, \%H = hour, \%M = minute, \%S = second)
 #' @param subst.na substitution value for NA values
 #' @param dbg if \code{TRUE}, debug messages are shown
-#' 
+#' @export
 hsCreateGerrisInputFiles <- function(
   mdb, 
   csv.dir,
@@ -391,11 +390,10 @@ hsCreateGerrisInputFiles <- function(
 #' @param colWidth width of a data column in bytes
 #' @param colNum number of data columns
 #' @param tsFormat string representing a timestamp
-#' 
 #' @return Number of bytes needed for one row of an InfoWorks result CSV file with
 #'   \emph{colNum} data columns of \emph{colWidth} bytes each and a timestamp
 #'   column of format according to the example timestamp \emph{tstamp}. 
-#' 
+#' @export
 hsRowLen <- function(colWidth, colNum, tsFormat = "2011-12-31 23:59:59") 
 {
   ## 21 is the number of bytes needed for the extra column counting the seconds
@@ -418,7 +416,7 @@ hsRowLen <- function(colWidth, colNum, tsFormat = "2011-12-31 23:59:59")
 #'   \code{timestep} of \emph{timestep} seconds in bytes if the header file 
 #'   is \emph{bytesHeader} and each data row is \emph{bytesRow} bytes long.
 #' @param dbg if \code{TRUE}, debug messages are shown
-#' 
+#' @export
 hsFileSize <- function(nDays, bytesHeader, bytesRow, timestep, dbg = FALSE) 
 {
   # one last line for 00:00:00 of last day
@@ -442,7 +440,7 @@ hsFileSize <- function(nDays, bytesHeader, bytesRow, timestep, dbg = FALSE)
 #'   \emph{bytesFile} with a header line of \emph{bytesHeader} bytes length, 
 #'   each data row being \emph{bytesRow} bytes long and a result \code{timestep} of
 #'   \emph{timestep} seconds.
-#' 
+#' @export
 hsDaysInFile <- function(bytesFile, bytesHeader, bytesRow, timestep) 
 {
   ((bytesFile - bytesHeader) / bytesRow - 1) * timestep / (24 * 60 * 60)
@@ -462,7 +460,7 @@ hsDaysInFile <- function(bytesFile, bytesHeader, bytesRow, timestep)
 #'   in bytes, on the number \emph{nDays} of days to simulate and on the size
 #'   \emph{bytesHeader} and \emph{bytesRow} of the header and of a data
 #'   line, respectively.
-#' 
+#' @export
 hsTsInFile <- function(bytesFile, bytesHeader, bytesRow, nDays) 
 {
   (24 * 60 * 60) * nDays / ((bytesFile - bytesHeader) / bytesRow - 1)
@@ -487,7 +485,7 @@ hsTsInFile <- function(bytesFile, bytesHeader, bytesRow, nDays)
 #' @param dbg if \code{TRUE}, debug messages are shown
 #' @return List with elements \emph{Bytes}, \emph{kB}, \emph{MB}, \emph{GB}
 #'   giving the requested file size in the according unit.
-#' 
+#' @export
 hsIwResultFileSize <- function(
   dateFirst,
   dateLast,
@@ -527,7 +525,7 @@ hsIwResultFileSize <- function(
 #' @param colWidth width of a data column in bytes
 #' @param tsFormat string representing a timestamp
 #' @param bytesHeader length of header line in bytes
-#' 
+#' @export
 hsPlotIwFileSizeVsTsAndPeriod <- function(
   nCols,
   colWidth = 12,
