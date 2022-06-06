@@ -551,7 +551,7 @@ hsPlotIwFileSizeVsTsAndPeriod <- function(
   graphics::par(oma = c(1,1,1,1), mar = c(4,4,5,1))
   
   for (i in seq(12, 1, by = -1)) {
-    nDays <- sum(daynums[1:i])
+    nDays <- sum(daynums[seq_len(i)])
     myBs  <- hsFileSize(nDays, bytesHeader, bytesRow, tsteps)
     myLty <- ifelse(i %% 2 == 0, 1, 2)
     
