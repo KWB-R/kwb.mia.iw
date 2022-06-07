@@ -10,20 +10,18 @@ exported from InfoWorks.
 
 ## Installation
 
-For details on how to install KWB-R packages checkout our [installation tutorial](https://kwb-r.github.io/kwb.pkgbuild/articles/install.html).
+For installing the latest release of this R package run the following code below:
 
 ```r
-### Optionally: specify GitHub Personal Access Token (GITHUB_PAT)
-### See here why this might be important for you:
-### https://kwb-r.github.io/kwb.pkgbuild/articles/install.html#set-your-github_pat
+# Enable repository from kwb-r
+options(repos = c(
+  kwbr = 'https://kwb-r.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'))
 
-# Sys.setenv(GITHUB_PAT = "mysecret_access_token")
+# Download and install kwb.mia.iw in R
+install.packages('kwb.mia.iw')
 
-# Install package "remotes" from CRAN
-if (! require("remotes")) {
-  install.packages("remotes", repos = "https://cloud.r-project.org")
-}
+# Browse the kwb.miacso manual pages
+help(package = 'kwb.mia.iw')
 
-# Install KWB package 'kwb.mia.iw' from GitHub
-remotes::install_github("KWB-R/kwb.mia.iw")
 ```
