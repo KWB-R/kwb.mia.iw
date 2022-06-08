@@ -140,7 +140,7 @@ hsTimeBarPlot <- function(
   # Plot number on top of each rectangle
   labpos <- as.integer(t1)/2 + as.integer(t2)/2
   labs <- kwb.plot::niceLabels(
-    label = 1:length(t1), 
+    label = seq_along(t1), 
     labelpos = labpos,
     mindist = tlab.mindist
   )
@@ -158,7 +158,7 @@ hsTimeBarPlot <- function(
   if (! is.null(legend.values)) {
     
     # prepare legend texts
-    ltexts <- sprintf(paste("%3d:", legend.format), 1:length(t1), legend.values)
+    ltexts <- sprintf(paste("%3d:", legend.format), seq_along(t1), legend.values)
     
     # if required, sort legend texts by volume, decreasingly
     if (legend.sort) {
